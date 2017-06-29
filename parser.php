@@ -2,6 +2,11 @@
 
 set_time_limit(0);
 
+if (!file_exists('item.txt'))
+{
+	exit("Unable to find item txt file.");
+}
+
 $data = file_get_contents('item.txt');
 $array = array();
 
@@ -38,16 +43,16 @@ foreach ($array as $item)
 		{
 			copy($path, 'output/'.$item['id'].'.swf');
 
-			echo 'SWF for item '.$item['id'].' successfully generated.<br />';
+			echo "SWF for item ".$item['id']." successfully generated.".PHP_EOL;
 		}
 		catch (Exception $e)
 		{
-			echo 'Fail to generate SWF for item '.$item['id'].'<br />';
+			echo "Fail to generate SWF for item ".$item['id'].".".PHP_EOL;
 		}
 	}
 	else
 	{
-		echo 'Unable to find file: '.$path.'<br />';
+		echo "Unable to find file: ".$path.".".PHP_EOL;
 	}
 }
 
