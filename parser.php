@@ -39,13 +39,11 @@ foreach ($array as $item)
 
 	if (file_exists($path))
 	{
-		try
+		if (copy($path, 'output/'.$item['id'].'.swf'))
 		{
-			copy($path, 'output/'.$item['id'].'.swf');
-
 			echo "SWF for item ".$item['id']." successfully generated.".PHP_EOL;
 		}
-		catch (Exception $e)
+		else
 		{
 			echo "Fail to generate SWF for item ".$item['id'].".".PHP_EOL;
 		}
