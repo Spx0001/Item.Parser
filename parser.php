@@ -8,7 +8,8 @@ if (!file_exists('item.txt'))
 }
 
 $data = file_get_contents('item.txt');
-$array = array();
+$errors = array();
+$items = array();
 
 // On vide le dossier de sortie
 foreach (glob('output/*') as $file)
@@ -24,7 +25,7 @@ foreach (explode(';', $data) as $line)
 	preg_match('/(g:([0-9]+))/', $line, $g);
 	preg_match('/(d:"(.+)",)/', $line, $d);
 
-	array_push($array, [
+	array_push($items, [
 		'id' => intval($iu[2]),
 		'type' => intval($t[2]),
 		'gfx' => intval($g[2]),
@@ -33,26 +34,34 @@ foreach (explode(';', $data) as $line)
 }
 
 // Copie des looks selon les ID des items
-foreach ($array as $item)
+foreach ($items as $item)
 {
 	$path = 'clips/items/'.$item['type'].'/'.$item['gfx'].'.swf';
 
 	if (file_exists($path))
 	{
-		if (copy($path, 'output/'.$item['id'].'.swf'))
+		if (!copy($path, 'output/'.$item['id'].'.swf'))
 		{
-			echo "SWF for item ".$item['id']." successfully generated.".PHP_EOL;
-		}
-		else
-		{
-			echo "Fail to generate SWF for item ".$item['id'].".".PHP_EOL;
+			array_push($errors, "Fail to generate SWF for item ".$item['id']);
 		}
 	}
 	else
 	{
-		echo "Unable to find file: ".$path.".".PHP_EOL;
+		array_push($errors, "Unable to find file: ".$path);
 	}
 }
 
+echo "Files successfully generated (".count($errors)." error(s) on ".count($items)." items)".PHP_EOL;
+
+// Sauvegarde des erreurs dans un fichier texte
+$error_file = fopen('output/error.txt', 'w');
+
+foreach ($errors as $message)
+{
+	fwrite($error_file, $message.PHP_EOL);
+}
+
+fclose($error_file);
+
 // Enregistrement des données dans un fichier JSON
-file_put_contents('output/data.json', json_encode($array));
+file_put_contents('output/data.json', json_encode($items));
