@@ -73,6 +73,6 @@ foreach ($errors as $message)
 fclose($error_file);
 
 // Enregistrement des données dans un fichier JSON
-file_put_contents('data/data.json', json_encode($items));
+file_put_contents('data/data.json', json_encode($items, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
 echo "JSON file successfully generated".PHP_EOL;
