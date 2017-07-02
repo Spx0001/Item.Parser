@@ -8,20 +8,30 @@ if (!file_exists('item.txt'))
 }
 
 $data = file_get_contents('item.txt');
+$old_swf_files = glob('files/*.swf');
+$old_data_files = glob('data/*');
 $errors = array();
 $items = array();
 
-// On vide le dossier de sortie
-echo "Deleting older generated files (".count(glob('files/*.swf')).")".PHP_EOL;
-
-foreach (glob('files/*.swf') as $file)
+// On vide les dossier de sortie
+if (count($old_swf_files) > 0)
 {
-	unlink($file);
+	echo "Deleting older generated SWF files (".count($old_swf_files).")".PHP_EOL;
+
+	foreach ($old_swf_files as $swf_file)
+	{
+		unlink($swf_file);
+	}
 }
 
-foreach (glob('data/*') as $file)
+if (count($old_data_files) > 0)
 {
-	unlink($file);
+	echo "Deleting older data files (".count($old_data_files).")".PHP_EOL;
+
+	foreach ($old_data_files as $data_file)
+	{
+		unlink($data_file);
+	}
 }
 
 // Parser du fichier texte
