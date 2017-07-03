@@ -6,7 +6,11 @@ Le script est prévu pour être lancé en mode console, pour le lancer, éxécut
 ```
 php parser.php
 ```
-
 Les informations des langs doivent être contenus dans un fichier `item.txt` à la racine du dossier, le script générera les swf dans le dossier `files/`.
-
 Le script génère aussi un fichier contenant les erreurs rencontrés lors de son éxécution ainsi qu'un fichier JSON dans le dossier `data/`.
+
+
+Un second script est disponible pour synchroniser les données contenu dans le fichier JSON avec celles de votre base de donnée, pour le lancer, éxécuter cette commande:
+```
+php sync.php
+```
