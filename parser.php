@@ -21,38 +21,17 @@ foreach (explode(';', $data) as $line)
 	preg_match('/(g:([0-9]+))/', $line, $g);
 	preg_match('/(d:"(.+)",)/', $line, $d);
 	preg_match('/(wd: ([a-z]+),)/', $line, $wd);
-
+	preg_match('/(fm:([a-z]+),)/', $line, $fm);
+	
 	array_push($items, [
 		'id' => intval($iu[2]),
 		'type' => intval($t[2]),
 		'gfx' => intval($g[2]),
 		'desc' => $d[2],
 		'wd' => $wd[2],
+		'fm' => $fm[2],
 	]);
 }
-
-// Copie des looks selon les ID des items
-echo "Trying to generate new SWF files (".count($items).")".PHP_EOL;
-
-foreach ($items as $item)
-{
-	$path = 'clips/items/'.$item['type'].'/'.$item['gfx'].'.swf';
-
-	if (file_exists($path))
-	{
-		if (!copy($path, 'files/'.$item['id'].'.swf'))
-		{
-			array_push($errors, "Fail to generate SWF for item ".$item['id']);
-		}
-	}
-	else
-	{
-		array_push($errors, "Unable to find file: ".$path);
-	}
-}
-
-echo "SWF files successfully generated (".count($errors)." error(s) on ".count($items)." items)".PHP_EOL;
-
 // Sauvegarde des erreurs dans un fichier texte
 $error_file = fopen('data/error.txt', 'w');
 
