@@ -4,7 +4,7 @@ set_time_limit(0);
 
 try
 {
-	$db = new PDO('mysql:host=localhost;dbname=test', 'root', '');
+	$db = new PDO('mysql:host=localhost;dbname=dofusdb', 'root', '');
 	$db->exec('SET NAMES utf8');
 }
 catch (Exception $e)
@@ -22,11 +22,11 @@ if (file_exists($path))
 
 	foreach ($items as $item)
 	{
-		$query = $db->prepare('UPDATE `item_template` SET `desc`=?, `gfx`=? WHERE `id`=?;');
-
+		$query = $db->prepare('UPDATE `item_template` SET `desc`=?, `gfx`=?, `wd`=?  WHERE `id`=?;');		
 		$query->bindValue(1, $item['desc'], PDO::PARAM_STR);
 		$query->bindValue(2, $item['gfx'], PDO::PARAM_INT);
-		$query->bindValue(3, $item['id'], PDO::PARAM_INT);
+		$query->bindValue(3, $item['wd'], PDO::PARAM_STR);
+		$query->bindValue(4, $item['id'], PDO::PARAM_INT);	
 		$query->execute();
 	}
 
